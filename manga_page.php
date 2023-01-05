@@ -197,7 +197,7 @@
             <div class="container">
                 <div class="about-us">
                     <h2>Về Nhóm</h2>
-                    <p class="content-abu"><b>Các thành viên tham gia dự án gồm:</b><br>Nguyễn Hoài Nam - 2121050849<br>Trần Văn Phương - 2121050295<br>Kiều Duy Phong -  </p><br><br><hr>
+                    <p class="content-abu"><b>Các thành viên tham gia dự án gồm:</b><br>Nguyễn Hoài Nam - 2121050849<br>Trần Văn Phương - 2121050295</p><br><br><hr>
                     <ul class="social-icon">
                         <li><a href="" class="social ft"><i class="fa fa-facebook"></i></a></li>
                         <li><a href="" class="social ft"><i class="fa fa-github"></i></a></li>
@@ -235,7 +235,7 @@
                     </ul>
                 </div>
                 <div class="subscribe"><h2>Đăng ký liên hệ</h2>
-                    <p>Vui lòng nhập số điện thoại để nhận thông tin<br> cập nhật mới nhất:</p><hr>
+                    <p>Vui lòng nhập email để nhận thông tin<br> cập nhật mới nhất:</p><hr>
                     <ul>
                         <li>
                             <form class="form">

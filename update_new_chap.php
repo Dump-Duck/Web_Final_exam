@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        .form-update{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-update form{
+            margin: 150px 700px;
+            border: 1px solid black;
+            background-color: lightgoldenrodyellow;
+        }
+
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Chap</title>
 </head>
 <body>
     <button><a href="manga_page.php">Back to Home Page</a></button><br><br>
-    <form method="post" enctype="multipart/form-data">
-        <p>Chapter ID: </p><input type="number" name="chap_id" placeholder="Chapter ID">
-        <p>Chap content: </p><textarea name="chap_content" placeholder="Chapter content" rows="10" cols="100"></textarea><br><br>
-        <p>Upload image: </p><input type="file" name="image[]" multiple>
-        <input type="submit" name="upload" value="Upload">
-    </form>
+    <div class="form-update">
+        <form method="post" enctype="multipart/form-data">
+            <p>Chapter ID: </p><input type="number" name="chap_id" placeholder="Chapter ID">
+            <p>Chap content: </p><textarea name="chap_content" placeholder="Chapter content" rows="10" cols="100"></textarea><br><br>
+            <p>Upload image: </p><input type="file" name="image[]" multiple>
+            <p style='text-align:center'><input type="submit" name="upload" value="Upload"></p>
+        </form>
+    </div>
     <?php 
         if(isset($_POST['upload'])) {
             error_reporting(0);
