@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="CSS/Music_page_style.css" rel="stylesheet">
+    <link href="CSS/Music_page.css" rel="stylesheet">
     <link href="CSS/Menu.css" rel="stylesheet">
+    <link href="CSS/Footer.css " rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="CSS/Footer.css " rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <title>MKD Entertaining Music</title>
 </head>
 
@@ -30,7 +31,6 @@
                     }
                     ?>
                     <li class="menu-link"><a href="music_page.php" class="menu-option">Nghe nhạc</a></li>
-                    <li class="menu-link"><a href="../Movie/movie_page.php" class="menu-option">Xem phim</a></li>
                     <li class="menu-link"><a href="../manga_page.php" class="menu-option">Đọc truyện</a></li>
                     <li class="menu-link"><a href="search.php" class="menu-option">Tìm kiếm</a></li>
                     <?php
@@ -42,14 +42,14 @@
                             while ($row = $check_account_type->fetch_assoc()) {
                                 if ($row['account_type'] == 1 or $row['account_type'] == 3) {
                                     echo "<li class='menu-link'><a href='song_manage.php' class='menu-option'>Quản lý nhạc</a></li>";
-                                    echo "<li class='menu-link'><a href='logout.php' class='menu-option'>Đăng xuất</a></li>";
+                                    echo "<li class='menu-link'><a href='../logout.php' class='menu-option'>Đăng xuất</a></li>";
                                 } else {
-                                    echo "<li class='menu-link'><a href='logout.php' class='menu-option'>Đăng xuất</a></li>";
+                                    echo "<li class='menu-link'><a href='../logout.php' class='menu-option'>Đăng xuất</a></li>";
                                 }
                             }
                         }
                     } else {
-                        echo "<li class='menu-link'><a href='login.php' class='menu-option'>Đăng nhập</a></li>";
+                        echo "<li class='menu-link'><a href='../login.php' class='menu-option'>Đăng nhập</a></li>";
                     }
                     ?>
                 </ul>
@@ -60,9 +60,30 @@
                 <a href="#" class="fa fa-github icon-social"></a>
             </div>
         </div>
-    </nav>
+    </nav> 
 
     <!------------------------------x------------------------------ Menu ------------------------------x------------------------------>
+    <!------------------------------------------------------------- Music Player ------------------------------------------------------------->
+    <div class="music-player">
+        <div class="music-playing-img"><img src="Images/Song/Waiting for love.png" width="54px" height="54px" ;></div>
+        <div class="music-playing">
+            <h3>Waiting for love</h3>
+            <h4>Avicii</h4>
+        </div>
+        <button class="prev-music">
+            <ion-icon name="play-skip-back"></ion-icon>
+        </button>
+        <button class="play-music">
+            <ion-icon name="play"></ion-icon>
+        </button>
+        <button class="next-music">
+            <ion-icon name="play-skip-forward"></ion-icon>
+        </button>
+        <div class="audio-player">
+            <audio controls src="Audio/Waiting For Love.mp3" id="song"></audio>
+        </div>
+    </div>
+    <!------------------------------x------------------------------ Music Player ------------------------------x------------------------------>
 
     <!------------------------------------------------------------- Content ------------------------------------------------------------->
     <div class="content">
@@ -90,26 +111,54 @@
         <div class="main-content">
 
             <div class="search">
-                <form class="search-form" action="" method="get">
-                    <input class="search-input" type="text" placeholder="Tìm kiếm bài hát, nghệ sĩ, lời bài hát...">
-                    <button class="search-button" type="submit"><img src="Images/search.png"></button>
+                <form class="search-form" method="get">
+                    <input class="search-input" type="text" name="title" placeholder="Tìm kiếm bài hát theo tên hoặc nghệ sĩ">
+                    <button class="search-button" type="submit" name="search-song"><img src="Images/search.png"></button>
                 </form>
             </div>
+            <?php
+
+            if (isset($_GET['search-song'])) {
+                echo '<div class="search-results">';
+                echo "<h1>Kết quả tìm kiếm</h1>";
+                $search = $_GET['title'];
+                require 'connect.php';
+                mysqli_set_charset($conn, 'UTF8');
+                $sql = "SELECT * FROM songs WHERE title LIKE '%$search%' OR artist LIKE '%$search%'";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<div class='song'>";
+                            echo "<a href=''><img height='250px' width='250px' src='Images/Song/" . $row['image'] . "'></a>";
+                            echo "<b>" . $row['title'] . "</b>";
+                            echo "<p>" . $row['artist'] . "</p>";
+                            echo "</div>";
+                        }
+                    }
+                } else {
+                    echo "Our website currently doesn't have the song you're looking for!";
+                }
+                echo '</div>
+                <p></p>
+                <hr>';
+            }
+            ?>
             <!------------------------------------------------------------- Outstanding ------------------------------------------------------------->
             <h1>Nổi bật</h1>
             <div class="outstanding">
-                <div class="outstanding-song">
-                    <a href=""><img class="outstanding-image" src="Images/Song/Thế giới trong em.png"></a>
-                    <b class="outstanding-song-name">Thế giới trong em</b>
-                </div>
-                <div class="outstanding-song">
-                    <a href=""><img class="outstanding-image" src="Images/Song/Tại vì sao.png"></a>
-                    <b class="outstanding-song-name">Tại vì sao</b>
-                </div>
-                <div class="outstanding-song">
-                    <a href=""><img class="outstanding-image" src="Images/Song/Đáp án cuối cùng.png"></a>
-                    <b class="outstanding-song-name">Đáp án cuối cùng</b>
-                </div>
+                <?php
+                require 'connect.php';
+                mysqli_set_charset($conn, 'UTF8');
+                $sql = "SELECT * FROM `songs` ORDER BY id DESC LIMIT 3;";
+                $result = $conn->query($sql);
+                while ($row = $result->fetch_assoc()) {
+                    echo '<div class="outstanding-song">';
+                    echo '<a href=""><img class="outstanding-image" src="Images/Song/' . $row['image'] . '"></a>';
+                    echo '<b class="outstanding-song-name">' . $row['title'] . '</b>';
+                    echo '</div>';
+                }
+                ?>
             </div>
             <p></p>
             <hr>
@@ -118,94 +167,55 @@
             <h1>Mới phát hành</h1>
             <div class="new-song-list">
                 <div class="list">
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Làm sao xóa.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Làm sao xóa</a></h3>
-                            <h5><a href="#" class="singer">Dee Trần</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Tại vì sao.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="Tại vì sao.html" class="song">Tại vì sao</a></h3>
-                            <h5><a href="https://zingmp3.vn/Nghiem-Vu-Hoang-Long" class="singer">MCK</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Yêu 3 năm dại 1 giờ.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Yêu 3 năm dại 1 giờ</a></h3>
-                            <h5><a href="#" class="singer">Chu Thúy Quỳnh</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Waiting for you.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Waiting for you</a></h3>
-                            <h5><a href="#" class="singer">MONO</a>, <a href="" class="singer">Onionn</a></h5>
-                        </div>
-                    </div>
+                    <?php
+                    require 'connect.php';
+                    mysqli_set_charset($conn, 'UTF8');
+                    $sql = "SELECT * FROM `songs` ORDER BY id DESC LIMIT 4;";
+                    $result = $conn->query($sql);
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<div class="new-song">';
+                        echo '<div class="new-song-image"><a href=""><img src="Images/Song/' . $row['image'] . '"></a></div>';
+                        echo '<div class="new-song-info">';
+                        echo '<h3><a href="" class="song">' . $row['title'] . '</a></h3>';
+                        echo '<h5><a href="" class="singer">' . $row['artist'] . '</a></h5>';
+                        echo '</div>
+                        </div>';
+                    }
+                    ?>
                 </div>
                 <div class="list">
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Đáp án cuối cùng.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="Đáp án cuối cùng.html" class="song">Đáp án cuối cùng</a></h3>
-                            <h5><a href="https://zingmp3.vn/Quan-A-P" class="singer">Quân A.P</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Khi ông mặt trời khóc.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Khi ông mặt trời khóc</a></h3>
-                            <h5><a href="#" class="singer">Tiên Tiên</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Tự tình 2.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Tự tình 2</a></h3>
-                            <h5><a href="#" class="singer">Trung Quân Idol</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Cô ta.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Cô ta</a></h3>
-                            <h5><a href="#" class="singer">Vũ</a></h5>
-                        </div>
-                    </div>
+                    <?php
+                    require 'connect.php';
+                    mysqli_set_charset($conn, 'UTF8');
+                    $sql = "SELECT * FROM `songs` ORDER BY id DESC LIMIT 4, 4;";
+                    $result = $conn->query($sql);
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<div class="new-song">';
+                        echo '<div class="new-song-image"><a href=""><img src="Images/Song/' . $row['image'] . '"></a></div>';
+                        echo '<div class="new-song-info">';
+                        echo '<h3><a href="#" class="song">' . $row['title'] . '</a></h3>';
+                        echo '<h5><a href="#" class="singer">' . $row['artist'] . '</a></h5>';
+                        echo '</div>
+                        </div>';
+                    }
+                    ?>
                 </div>
                 <div class="list">
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Em buông.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Em buông</a></h3>
-                            <h5><a href="#" class="singer">Hương Giang</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Từng là của nhau.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Từng là của nhau</a></h3>
-                            <h5><a href="#" class="singer">Bảo Anh</a>, <a href="" class="singer">Táo</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Thế giới trong em.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Thế giới trong em</a></h3>
-                            <h5><a href="#" class="singer">Hương Ly</a>, <a href="" class="singer">LY.M</a></h5>
-                        </div>
-                    </div>
-                    <div class="new-song">
-                        <div class="new-song-image"><img src="Images/Song/Sashimi.png"></div>
-                        <div class="new-song-info">
-                            <h3><a href="#" class="song">Sashimi</a></h3>
-                            <h5><a href="#" class="singer">Chi Pu</a></h5>
-                        </div>
-                    </div>
+                    <?php
+                    require 'connect.php';
+                    mysqli_set_charset($conn, 'UTF8');
+                    $sql = "SELECT * FROM `songs` ORDER BY id DESC LIMIT 8, 4;";
+                    $result = $conn->query($sql);
+                    while ($row = $result->fetch_assoc()) {
+                        echo '<div class="new-song">';
+                        echo '<div class="new-song-image"><a href=""><img src="Images/Song/' . $row['image'] . '"></a></div>';
+                        echo '<div class="new-song-info">';
+                        echo '<h3><a href="#" class="song">' . $row['title'] . '</a></h3>';
+                        echo '<h5><a href="#" class="singer">' . $row['artist'] . '</a></h5>';
+                        echo '</div>
+                        </div>';
+                    }
+                    ?>
                 </div>
             </div>
             <p></p>
@@ -386,8 +396,10 @@
         <div class="container">
             <div class="about-us">
                 <h2>Về Nhóm</h2>
-                <p class="content-abu"><b>Các thành viên tham gia dự án gồm:</b><br>Nguyễn Hoài Nam - 2121050849<br>Trần
-                    Văn Phương - 2121050295<br>Kiều Duy Phong - 2121050042</p><br><br>
+                <p class="content-abu"><b>Các thành viên tham gia dự án gồm:</b>
+                    <br>Nguyễn Hoài Nam - 2121050849<br>
+                        Trần Văn Phương - 2121050295
+                </p>
                 <hr>
                 <ul class="social-icon">
                     <li><a href="" class="social ft"><i class="fa fa-facebook"></i></a></li>
@@ -424,7 +436,6 @@
                         <i class="fa fa-envelope"></i>
                         <p><a href="#" class="contact-info">2121050295@student.humg.edu.vn</a><br>
                             <a href="#" class="contact-info">2121050849@student.humg.edu.vn</a><br>
-                            <a href="#" class="contact-info">2121050042@student.humg.edu.vn</a>
                         </p>
                     </li>
                 </ul>
@@ -446,5 +457,6 @@
     </footer>
     <!------------------------------x------------------------------ Footer ------------------------------x------------------------------>
 </body>
+<script src='JS/music.js'></script>
 
 </html>
