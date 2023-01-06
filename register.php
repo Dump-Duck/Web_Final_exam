@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="CSS/register&login.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="Javascript/register_check.js"></script>
+    
 </head>
 <body>
     <div id="notification-area">
@@ -38,33 +39,29 @@
                 $password = $_POST['password'];
                 $password2 = $_POST['repassword'];
                 $type = $_POST['type'];
-                if($username=="") {
-                    echo "";
-                } else {
-                    $create_new_account = "insert into users(user_name, password, account_type) values('$username','$password','$type')";
-                    $check_user = "select * from users where user_name='$username'";
-                    $result = $conn->query($check_user);
-                    if($result->num_rows>0) {
-                        while($user = $result->fetch_assoc()) {
-                            if($user['user_name']==$username) {
-                                //account has already been created
-                                echo "<script>alert('Your username has already exists. Please try again!');</script>";
-                            }
+
+                $create_new_account = "insert into users(user_name, password, account_type) values('$username','$password','$type')";
+                $check_user = "select * from users where user_name='$username'";
+                $result = $conn->query($check_user);
+                if($result->num_rows>0) {
+                    while($user = $result->fetch_assoc()) {
+                        if($user['user_name']==$username) {
+                            //account has already been created
+                            echo "<script>alert('Your username has already exists. Please try again!');</script>";
                         }
                     }
-                    else {
-                        if($password2==$password) {
-                            if($conn->query($create_new_account)==TRUE) {
-                                echo "<script>alert('Your account has been created. Click OK to confirm and you will be redirected to login page in few second!');</script>";
-                                header('refresh:3;url=login.php');
-                            }
-                        }   
-                    } 
                 }
+                else {
+                    if($password2==$password) {
+                        if($conn->query($create_new_account)==TRUE) {
+                            echo "<script>alert('Your account has been created. Click OK to confirm and you will be redirected to login page in few second!');</script>";
+                            header('refresh:3;url=login.php');
+                        }
+                    }   
+                } 
                 $conn->close();
             }
         ?>
     </form><br>
 </body>
-<script src="Javascript/register&login_check.js"></script>
 </html>

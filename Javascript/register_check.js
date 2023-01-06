@@ -1,16 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const form_register = document.querySelector(".register-form");
+    const form = document.querySelector(".register-form");
     const notification_area = document.querySelector("#notification-area");
-    const username = document.querySelector("#username").value;
-    const password = document.querySelector("#password").value;
-    const re_password = document.querySelector("#re-password").value;
-
-    form_register.onsubmit = function() {
+    
+    form.onsubmit = function() {
+        var username = document.querySelector("#username").value;
+        var password = document.querySelector("#password").value;
+        var re_password = document.querySelector("#re-password").value;
         create_alert();
         var notification_content = document.querySelector(".notification");
         var message_content = document.querySelector("#message");
 
-        if(username == "" || password == "" || re_password == "") {
+        if(username === "" || password === "" || re_password === "") {
             message_content.innerHTML = `Please enter all information in field!`;
             notification_content.style.background = "rgba(255, 10, 5, 0.4";
             notification_content.style.borderLeft = "6px solid red";
